@@ -1,0 +1,67 @@
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+}
+
+#delete-form {
+    display: inline;
+
+}
+#bottom{
+	padding-bottom: 10px;
+}
+body{
+	background-size: cover;
+	background-image: url("testing.jpeg");
+    color: white;
+    background-size: 1280px 800px;
+}
+
+#rightmost{
+    padding-right: 20px;
+}
+
+select{
+    color: black;
+}
+button{
+    color: black;
+
+}
+#grid img{
+    width: 30%;
+    float: left;
+    margin: 1.66%;	
+}
+
+#display img{
+    /* height: 100px; */
+    /* margin: auto;
+    padding-left: 140px; */
+    height: 650px;
+}
+li{
+	list-style-type: None;
+}
+a{
+	color: white;
+}
+
+.like{
+	color: black;
+}
+
+input{
+	color: red;
+}
+
+.commentText{
+	color: black;
+}

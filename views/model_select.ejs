@@ -1,0 +1,9 @@
+<% include ./partials/header %> 
+<div style="text-align: center">
+	<h1><strong>Enter the model you wish to choose from <%=company.comp_name%></strong></h1>
+	<ul>
+		<% for(var i=0;i<company.car_models.length;i++){ %>
+	     	 <li><h4><strong><a href="model_select/<%=company.car_models[i]._id%>"><%=company.car_models[i].name%></strong></h4></li>
+		<% } %>
+	</ul>
+</div>

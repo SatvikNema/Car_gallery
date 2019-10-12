@@ -1,0 +1,12 @@
+<% include ./partials/header %> 
+<div class="container" style="text-align: center">
+	<div style="width: 30%; margin: 25px auto;">
+	<h2> Add your comment here </h2>
+		<form action="/model_select/<%=model._id%>/addcomment" method="POST">
+			<div class="form-group">
+				<input type="text" name="content">
+			</div>
+				<button>Submit</button>
+		</form>
+	</div>
+</div>
