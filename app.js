@@ -17,6 +17,7 @@ const addingCarRoutes = require("./routes/addcars_routes"),
 	commentRoutes = require("./routes/comment_routes"),
 	homeRoutes = require("./routes/home_routes");
 
+let PORT = process.env.PORT;
 //connecting to database
 // mongoose.connect("mongodb://localhost/car_gallery_v8");
 mongoose.connect(MONGO_URI, {
@@ -67,6 +68,6 @@ app.use(commentRoutes);
 app.use(authRoutes);
 app.use(homeRoutes);
 
-app.listen(3000, function () {
+app.listen(PORT, function () {
 	console.log("Starting up the car server");
 });
