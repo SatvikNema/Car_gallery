@@ -1,13 +1,14 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-var company_modelSchema = new mongoose.Schema({
+const company_modelSchema = new mongoose.Schema({
 	name: String,
 	img: String,
-	comments: [{
+	comments: [
+		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Comment"
-		}
-	]
+			ref: "Comment",
+		},
+	],
 });
 
 module.exports = mongoose.model("Company_model", company_modelSchema);
