@@ -1,8 +1,9 @@
-<% include ./partials/header %> 
+<% include ./partials/header %>
 
-<form action="/model_select/<%=model_id%>/addcomment/<%=comment._id%>?_method=PUT" method="POST">
-
-
-    <input type="text" name="comment[text]" value="<%= comment.text %>">
-    <button>Submit</button>
+<form
+	action="/model_select/<%=model_id%>/addcomment/<%=comment._id%>?_method=PUT"
+	method="POST"
+>
+	<input type="text" name="text" value="<%= comment.text %>" />
+	<button>Submit</button>
 </form>

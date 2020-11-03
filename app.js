@@ -1,25 +1,21 @@
 require("dotenv").config();
-const express = require("express");
-const app = express();
-const bodyParser = require("body-parser"),
+const express = require("express"),
+	bodyParser = require("body-parser"),
 	mongoose = require("mongoose"),
 	passport = require("passport"),
 	LocalStrategy = require("passport-local"),
-	User = require("./models/user"),
-	company = require("./models/company"),
-	company_model = require("./models/models"),
-	comment = require("./models/comments"),
 	methodOverride = require("method-override"),
-	MONGO_URI = process.env.MONGODB_CONNECTION_URI;
-
-const addingCarRoutes = require("./routes/addcars_routes"),
+	addingCarRoutes = require("./routes/addcars_routes"),
 	authRoutes = require("./routes/auth_routes"),
 	commentRoutes = require("./routes/comment_routes"),
-	homeRoutes = require("./routes/home_routes");
+	homeRoutes = require("./routes/home_routes"),
+	User = require("./models/user"),
+	MONGO_URI = process.env.MONGODB_CONNECTION_URI_LOCAL;
 
-let PORT = process.env.PORT;
+const app = express();
+let PORT = process.env.PORT || 3000;
+
 //connecting to database
-// mongoose.connect("mongodb://localhost/car_gallery_v8");
 mongoose.connect(MONGO_URI, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
