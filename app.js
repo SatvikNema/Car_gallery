@@ -10,7 +10,7 @@ const express = require("express"),
 	commentRoutes = require("./routes/comment_routes"),
 	homeRoutes = require("./routes/home_routes"),
 	User = require("./models/user"),
-	MONGO_URI = process.env.MONGODB_CONNECTION_URI_LOCAL;
+	MONGO_URI = process.env.MONGODB_CONNECTION_URI;
 
 const app = express();
 let PORT = process.env.PORT || 3000;
