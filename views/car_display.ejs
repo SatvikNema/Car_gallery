@@ -19,7 +19,7 @@
 					<p class="commentText">
 						<%= model.comments[i].text %> 
 					</p>
-					<% if(currentUser && model.comments[i].author._id.equals(currentUser)){ %>
+					<% if(currentUser.userId && model.comments[i].author.id.equals(currentUser.userId)){ %>
 						<div id="bottom">
 						<a href="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>/edit"><button class="btn btn-xs btn-warning">Edit</button></a>
 

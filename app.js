@@ -60,7 +60,7 @@ app.use(
 //making an instance of current user and storing it in currentUser
 // then passing the instance of currentUser to all the ejs templates in the app
 app.use(function (req, res, next) {
-	res.locals.currentUser = req.session.userId;
+	res.locals.currentUser = req.session;
 	next();
 });
 

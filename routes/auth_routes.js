@@ -39,7 +39,7 @@ router.post("/register", async (req, res) => {
 		const userExists = await User.findOne({ username: req.body.username });
 		if (userExists) {
 			console.log("This username already exists. Try a new one.");
-			return res.rendirect("/register");
+			return res.redirect("/register");
 		} else {
 			const newUser = new User({
 				username: req.body.username,

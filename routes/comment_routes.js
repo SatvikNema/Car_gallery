@@ -16,7 +16,7 @@ const checkOwnerCommentShip = async (req, res, next) => {
 	try {
 		if (req.session.userId) {
 			const currComment = await Comment.findById(req.params.comment_id);
-			if (currComment.author._id.equals(req.session.userId)) {
+			if (currComment.author.id.equals(req.session.userId)) {
 				next();
 			}
 		} else {
@@ -42,7 +42,10 @@ router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 		const commentAuthor = await user.findById(req.session.userId);
 		const newComment = await new Comment({
 			text: req.body.content,
-			author: commentAuthor,
+			author: {
+				id: req.session.userId,
+				username: commentAuthor.username,
+			},
 		});
 		await newComment.save();
 		modelFound.comments.push(newComment);
