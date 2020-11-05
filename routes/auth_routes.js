@@ -23,17 +23,6 @@ router.get("/register", homeRedirect, (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-	// const newUser = new User({ username: req.body.username });
-	// User.register(newUser, req.body.password, (err, user) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 		return res.render("register");
-	// 	}
-	// 	passport.authenticate("local")(req, res, () => {
-	// 		res.redirect("/");
-	// 	});
-	// });
-
 	try {
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const userExists = await User.findOne({ username: req.body.username });
@@ -48,6 +37,7 @@ router.post("/register", async (req, res) => {
 			});
 			await newUser.save();
 			req.session.userId = newUser._id;
+			req.session.username = newUser.username;
 			return res.redirect("/");
 		}
 	} catch (e) {
@@ -63,7 +53,7 @@ router.post("/login", async (req, res) => {
 	try {
 		const userExists = await User.findOne({ username: req.body.username });
 		if (!userExists) {
-			console.log("No use with that username!");
+			// No use with that username!
 			return res.redirect("login");
 		} else {
 			const matched = await bcrypt.compare(
@@ -71,11 +61,12 @@ router.post("/login", async (req, res) => {
 				userExists.password
 			);
 			if (matched) {
+				// logged in!
 				req.session.userId = userExists._id;
-				console.log("logged in!");
+				req.session.username = userExists.username;
 				return res.redirect("/");
 			} else {
-				console.log("password did not match");
+				// password did not match
 				return res.redirect("/login");
 			}
 		}

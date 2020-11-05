@@ -1,67 +1,121 @@
 .thumbnail img {
-    width: 100%;
+	width: 100%;
 }
 
 .thumbnail {
-    padding: 0;
+	padding: 0;
 }
 
 .thumbnail .caption-full {
-    padding: 9px;
+	padding: 9px;
 }
 
 #delete-form {
-    display: inline;
-
+	display: inline;
 }
-#bottom{
+#bottom {
 	padding-bottom: 10px;
 }
-body{
+body {
 	background-size: cover;
 	background-image: url("testing.jpeg");
-    color: white;
-    background-size: 1280px 800px;
+	color: white;
+	background-size: 1280px 800px;
 }
 
-#rightmost{
-    padding-right: 20px;
+#rightmost {
+	padding-right: 20px;
 }
 
-select{
-    color: black;
+select {
+	color: black;
 }
-button{
-    color: black;
+button {
+	color: black;
+}
+#grid img {
+	width: 30%;
+	float: left;
+	margin: 1.66%;
+}
 
-}
-#grid img{
-    width: 30%;
-    float: left;
-    margin: 1.66%;	
-}
-
-#display img{
-    /* height: 100px; */
-    /* margin: auto;
+#display img {
+	/* height: 100px; */
+	/* margin: auto;
     padding-left: 140px; */
-    height: 650px;
+	height: 650px;
 }
-li{
+li {
 	list-style-type: None;
 }
-a{
+a {
 	color: white;
 }
 
-.like{
+.like {
 	color: black;
 }
 
-input{
+input {
 	color: red;
 }
 
-.commentText{
-	color: black;
+.comment-text {
+	color: whitesmoke;
+	margin-left: 10px;
+}
+
+.comment-date {
+	color: green;
+	color: lim;
+}
+
+.comment-author {
+	animation: example 2s infinite;
+	animation-direction: alternate;
+}
+
+@keyframes example {
+	10% {
+		color: red;
+	}
+	20% {
+		color: orange;
+	}
+	30% {
+		color: yellow;
+	}
+	40% {
+		color: lime;
+	}
+	50% {
+		color: lightgreen;
+	}
+	60% {
+		color: green;
+	}
+	70% {
+		color: darkgreen;
+	}
+	80% {
+		color: violet;
+	}
+	90% {
+		color: blue;
+	}
+	100% {
+		color: purple;
+	}
+}
+
+.comment-box {
+	width: 40%;
+	height: 50px;
+	margin: auto;
+	border: 2px doted rgb(208, 235, 135);
+	background-color: rgb(14, 51, 51);
+}
+
+hr {
+	width: 60%;
 }
