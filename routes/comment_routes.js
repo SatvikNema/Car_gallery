@@ -1,4 +1,5 @@
-const user = require("../models/user");
+const User = require("../models/user"),
+	Model = require("../models/models");
 
 const router = require("express").Router(),
 	Comment = require("../models/comments"),
@@ -39,7 +40,7 @@ router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
 		const modelFound = await Company_model.findById(req.params.id);
-		const commentAuthor = await user.findById(req.session.userId);
+		const commentAuthor = await User.findById(req.session.userId);
 		const newComment = await new Comment({
 			text: req.body.content,
 			author: {
@@ -47,8 +48,10 @@ router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 				username: commentAuthor.username,
 			},
 		});
-		await newComment.save();
+
 		modelFound.comments.push(newComment);
+
+		await newComment.save();
 		await modelFound.save();
 		res.redirect("/model_select/" + req.params.id);
 	} catch (e) {
@@ -98,6 +101,12 @@ router.delete(
 			const oldComment = await Comment.findByIdAndRemove(
 				req.params.comment_id
 			);
+			const model = await Model.findById(req.params.id);
+			const index = model.comments.indexOf(req.params.comment_id);
+			if (index > -1) {
+				model.comments.splice(index, 1);
+			}
+			await model.save();
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error occured: " + e);

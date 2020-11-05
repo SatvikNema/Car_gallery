@@ -1,0 +1,13 @@
+<% include ./partials/header %>
+
+<div class="container">
+    <% if (comments.length!=0) { %> 
+        <p>Comments of <%= user.username %></p>
+        <% comments.forEach((comment) => { %>
+	        <li><%= comment.text %></li>
+        <% }) %> 
+    <% } else{ %>
+	    <p>No comments made by this user</p>
+	<% } %>
+</div>
+<% include ./partials/footer %>

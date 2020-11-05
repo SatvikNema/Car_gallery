@@ -8,7 +8,8 @@ const express = require("express"),
 	authRoutes = require("./routes/auth_routes"),
 	commentRoutes = require("./routes/comment_routes"),
 	homeRoutes = require("./routes/home_routes"),
-	User = require("./models/user");
+	profileRoutes = require("./routes/profile_routes");
+User = require("./models/user");
 
 const app = express();
 const {
@@ -68,6 +69,7 @@ app.use(addingCarRoutes);
 app.use(commentRoutes);
 app.use(authRoutes);
 app.use(homeRoutes);
+app.use(profileRoutes);
 
 app.listen(PORT, function () {
 	console.log("Starting up the car server");

@@ -6,12 +6,6 @@ var UserSchema = new mongoose.Schema({
 		type: String,
 	},
 	password: String,
-	comments: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Comment",
-		},
-	],
 });
 
 module.exports = mongoose.model("User", UserSchema);
