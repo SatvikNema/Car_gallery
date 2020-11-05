@@ -19,11 +19,11 @@
 					<p class="commentText">
 						<%= model.comments[i].text %> 
 					</p>
-					<% if(currentUser && model.comments[i].author.id.equals(currentUser._id)){ %>
+					<% if(currentUser && model.comments[i].author._id.equals(currentUser)){ %>
 						<div id="bottom">
 						<a href="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>/edit"><button class="btn btn-xs btn-warning">Edit</button></a>
 
-						<form action="/model_select/<%=model._id%>/addcomment/<%=model.comments[	i]._id%>?_method=DELETE" method="POST" id="delete-form">
+						<form action="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>?_method=DELETE" method="POST" id="delete-form">
 							<button class="btn btn-xs btn-danger" id="delete-form">Delete</button>
 						</form>
 						</div>

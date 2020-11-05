@@ -1,19 +1,22 @@
+const user = require("../models/user");
+
 const router = require("express").Router(),
 	Comment = require("../models/comments"),
 	Company_model = require("../models/models");
 
 const isLoggedIn = (req, res, next) => {
-	if (req.isAuthenticated()) {
-		return next();
+	if (req.session.userId) {
+		next();
+	} else {
+		res.redirect("/login");
 	}
-	res.redirect("/login");
 };
 
 const checkOwnerCommentShip = async (req, res, next) => {
 	try {
-		if (req.isAuthenticated()) {
+		if (req.session.userId) {
 			const currComment = await Comment.findById(req.params.comment_id);
-			if (currComment.author.id.equals(req.user.id)) {
+			if (currComment.author._id.equals(req.session.userId)) {
 				next();
 			}
 		} else {
@@ -36,12 +39,10 @@ router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
 		const modelFound = await Company_model.findById(req.params.id);
+		const commentAuthor = await user.findById(req.session.userId);
 		const newComment = await new Comment({
 			text: req.body.content,
-			author: {
-				id: req.user._id,
-				username: req.user.username,
-			},
+			author: commentAuthor,
 		});
 		await newComment.save();
 		modelFound.comments.push(newComment);
