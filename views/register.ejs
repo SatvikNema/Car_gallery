@@ -1,15 +1,15 @@
 <% include ./partials/header %>
 <div class="container">
-	<div style="width: 30%; margin: 25px auto">
+	<div>
 		<h1>Register!</h1>
 		<form action="/register" method="POST">
 			<div class="form-group">
-				<input type="text" name="username" placeholder="username" />
+				<input class="form-control" type="text" name="username" placeholder="username" />
 			</div>
 			<div class="form-group">
-				<input type="password" name="password" placeholder="password" />
+				<input class="form-control" type="password" name="password" placeholder="password" />
 			</div>
-			<input class="like" type="submit" value="Sign up!" />
+			<input class="btn btn-primary" type="submit" value="Sign up!" />
 		</form>
 	</div>
 </div>

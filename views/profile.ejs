@@ -1,18 +1,30 @@
 <% include ./partials/header %>
 
-<div class="container">
-    <% if (comment2Model.size!=0) { %> 
-        <p>Comments of <%= user.username %></p>
-        <% comment2Model.forEach((value, key) => { %>
-            <div class="container">
-                <li>
-                    <%= key.text %> <br>
-                    on: <a href="/model_select/<%= value._id %>"><%= value.name %> </a>
-                </li>
-            </div>
-        <% }) %> 
-    <% } else{ %>
-	    <p>No comments made by this user</p>
-	<% } %>
-</div>
+<% if (comment2Model.size!=0) { %> 
+    <p>Comments of <%= user.username %></p>
+    <% comment2Model.forEach((value, key) => { %>
+        <div class="comment-box-profile">
+            <li>
+                <span class="comment-text-profile"><%= key.text %></span>
+                <br>
+                 <span>on: <a class="comment-model-profile" href="/model_select/<%= value._id %>"><%= value.name %> </a></span>
+                
+            </li>
+        </div>
+    <% }) %> 
+
+    <hr class="divide">
+
+    <p>Models added by <%= user.username %></p>
+    <% modelsMade.forEach((model) => { %>
+        <div class="model-box">
+            <li>
+                 <a class="model-profile" href="/model_select/<%= model._id %>"><%= model.name %> </a>
+            </li>
+        </div>
+    <% }) %> 
+
+<% } else{ %>
+    <p>No comments made by this user</p>
+<% } %>
 <% include ./partials/footer %>

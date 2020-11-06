@@ -1,55 +1,63 @@
 <% include ./partials/header %>
 
 <div class="container">
-	<h2>This is the car you chose:<%=model.name%></h2>
-	<form action="/model_select/<%=model._id%>?_method=DELETE" method="post">
-		<button>Delete!</button>
-	</form>
+	<h2 class="model-name"><%=model.name%></h2>
+	<p>Added by <a href="/profile/<%= owner._id %>" class="model-author"><%= owner.username %></a></p>
+	
+	<% if (currentUser.userId && owner._id.equals(currentUser.userId)) { %>
+		<form action="/model_select/<%=model._id%>?_method=DELETE" method="post">
+			<button class="btn btn-xl btn-danger">Delete!</button>
+		</form>
+	<% } %><br>
 	<div class="thumbnail">
 		<img src="<%=model.img%>" />
 	</div>
-	<h3>Comments</h3>
-	<%for(var i=0;i<model.comments.length;i++){%>
-		<div class="comment-box">
-			<span> 
-				Author:
-				<em class="comment-author">
-					<%= model.comments[i].author.username %> 
-				</em> 
-			</span>
-			<%const d = new Date(model.comments[i].date) %><%const month =
-			d.getMonth()+1, day = d.getDay(), year = d.getFullYear(), hours =
-			d.getHours(), mins = d.getMinutes(), sec = d.getSeconds(),
-			date=d.getDate()%>
+	<% if (model.comments.length == 0) { %>
+		<div>No comments on this model yet! </div>
+	<% } else { %>
+		<h2>Comments</h2>
+			<%for(var i=0;i<model.comments.length;i++){%>
+				<div class="comment-box">
+					<div class="pull-left">
+						<span> 
+							Author:
+							<em class="comment-author">
+								<%= model.comments[i].author.username %> 
+							</em> 
+						</span>
+						<span class="comment-text"><%= model.comments[i].text %></span>
+						<% if(currentUser.userId &&
+						model.comments[i].author.id.equals(currentUser.userId)){ %>
+							<div class="additional-buttons">
+								<a
+									href="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>/edit"> 
+									<button class="btn btn-xs btn-warning">Edit</button>
+								</a>
 
-			<span class="pull-right comment-date">
-				Time: <em><%= (hours + ":" + mins + ":" + sec) %></em><br />
-				Date: <em><%= date+"/"+month+"/"+year %></em>
-			</span>
-			<span class="comment-text"><%= model.comments[i].text %></span>
+								<form
+									action="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>?_method=DELETE"
+									method="POST"
+									id="delete-form">
+									<button class="btn btn-xs btn-danger" id="delete-form">
+										Delete
+									</button>
+								</form>
+							</div>
+						<% } %>
+					</div>
+					
+					<%const d = new Date(model.comments[i].date) %><%const month =
+					d.getMonth()+1, day = d.getDay(), year = d.getFullYear(), hours =
+					d.getHours(), mins = d.getMinutes(), sec = d.getSeconds(),
+					date=d.getDate()%>
 
-			<% if(currentUser.userId &&
-			model.comments[i].author.id.equals(currentUser.userId)){ %>
-			<div id="bottom">
-				<a
-					href="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>/edit"
-					><button class="btn btn-xs btn-warning">Edit</button></a
-				>
-
-				<form
-					action="/model_select/<%=model._id%>/addcomment/<%=model.comments[i]._id%>?_method=DELETE"
-					method="POST"
-					id="delete-form"
-				>
-					<button class="btn btn-xs btn-danger" id="delete-form">
-						Delete
-					</button>
-				</form>
-			</div>
-			<% } %>
-		</div>
-		<hr/>
-	<%}%>
+					<span class="pull-right comment-date">
+						Time: <em><%= (hours + ":" + mins + ":" + sec) %></em><br />
+						Date: <em><%= date+"/"+month+"/"+year %></em>
+					</span>
+				</div>
+			<%}%>
+	<% } %>
 	<h3>
 		<strong> 
 			<a href="/model_select/<%=model._id%>/addcomment"> 
@@ -59,5 +67,4 @@
 	</h3>
 
 </div>
->
 <% include ./partials/footer %>

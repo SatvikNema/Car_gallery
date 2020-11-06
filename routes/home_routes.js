@@ -2,6 +2,7 @@ const router = require("express").Router(),
 	Company = require("../models/company"),
 	Comment = require("../models/comments"),
 	Model = require("../models/models"),
+	User = require("../models/user"),
 	{ isLoggedIn, checkModelOwnership } = require("./utils");
 
 router.get("/", async (req, res) => {
@@ -31,7 +32,8 @@ router.get("/model_select/:id", async (req, res) => {
 		const modelFound = await Model.findById(req.params.id)
 			.populate("comments")
 			.exec();
-		res.render("car_display", { model: modelFound });
+		const owner = await User.findById(modelFound.author_id);
+		res.render("car_display", { model: modelFound, owner });
 	} catch (e) {
 		console.log("Error occured: " + e);
 	}

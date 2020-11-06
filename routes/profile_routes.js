@@ -4,12 +4,16 @@ const router = require("express").Router(),
 	Model = require("../models/models"),
 	{ isLoggedIn } = require("./utils");
 
-router.get("/profile/:id", isLoggedIn, async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id);
 
 		const comments = await Comment.find({
 			"author.id": req.params.id,
+		});
+
+		const modelsMade = await Model.find({
+			author_id: req.params.id,
 		});
 
 		let comment2Model = new Map();
@@ -20,14 +24,13 @@ router.get("/profile/:id", isLoggedIn, async (req, res) => {
 		}
 
 		if (user) {
-			if (req.params.id === req.session.userId) {
-				return res.render("profile", {
-					user,
-					comment2Model,
-				});
-			} else {
-				return res.redirect("/");
-			}
+			return res.render("profile", {
+				user,
+				comment2Model,
+				modelsMade,
+			});
+		} else {
+			return res.redirect("/");
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);

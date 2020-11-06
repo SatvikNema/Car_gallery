@@ -36,7 +36,7 @@ const checkModelOwnership = async (req, res, next) => {
 	try {
 		if (req.session.userId) {
 			const model = await Model.findById(req.params.id);
-			if (model && model.author_id == req.session.userId) {
+			if (model && model.author_id.equals(req.session.userId)) {
 				return next();
 			} else {
 				return res.redirect("back");

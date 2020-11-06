@@ -13,12 +13,14 @@
 #delete-form {
 	display: inline;
 }
-#bottom {
+.bottom {
 	padding-bottom: 10px;
 }
 body {
 	background-size: cover;
 	background-image: url("testing.jpeg");
+	/* background-image: url("../back2.jpg"); */
+
 	color: white;
 	background-size: 1280px 800px;
 }
@@ -50,6 +52,10 @@ li {
 }
 a {
 	color: white;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
 }
 
 .like {
@@ -60,14 +66,32 @@ input {
 	color: red;
 }
 
+.comment-box {
+	width: 80%;
+	margin: auto;
+	border: 1px solid rgb(208, 235, 135);
+	background-color: rgb(30, 87, 40, 0.5);
+	padding: 15px;
+	margin-bottom: 20px;
+	height: 80px;
+}
+.comment-box-profile {
+	width: 400px;
+	margin: auto;
+	border: 1px solid rgb(208, 235, 135);
+	background-color: rgb(30, 87, 40, 0.5);
+	padding: 5px;
+	margin-bottom: 20px;
+	height: 60px;
+}
 .comment-text {
 	color: whitesmoke;
 	margin-left: 10px;
+	font-size: medium;
 }
 
 .comment-date {
-	color: green;
-	color: lim;
+	color: rgb(15, 199, 85);
 }
 
 .comment-author {
@@ -75,6 +99,38 @@ input {
 	animation-direction: alternate;
 }
 
+.comment-text-profile {
+	color: whitesmoke;
+	font-size: medium;
+}
+
+.comment-model-profile {
+	color: rgb(15, 199, 85);
+}
+.model-author {
+	font-size: x-large;
+}
+.model-author:hover {
+	text-decoration: none;
+	animation: example 5s infinite;
+	animation-direction: alternate;
+}
+.model-name {
+	font-size: 50px;
+}
+
+.model-box {
+	width: 200px;
+	margin: auto;
+	background-color: rgb(30, 87, 40, 0.5);
+	border: 1px solid rgb(208, 235, 135);
+	padding: 15px;
+	margin-bottom: 20px;
+}
+.model-profile {
+	color: red;
+	font-size: x-large;
+}
 @keyframes example {
 	10% {
 		color: red;
@@ -108,14 +164,33 @@ input {
 	}
 }
 
-.comment-box {
+hr {
 	width: 40%;
-	height: 50px;
-	margin: auto;
-	border: 2px doted rgb(208, 235, 135);
-	background-color: rgb(14, 51, 51);
 }
 
-hr {
-	width: 60%;
+.divide {
+	width: 70%;
+}
+
+.form-control {
+	width: 250px;
+	margin-bottom: 20px;
+}
+
+.h1 {
+	font-size: 10px;
+	color: red;
+}
+
+div span {
+	overflow-wrap: break-word;
+}
+
+.additional-buttons {
+	margin-top: 10px;
+	text-align: left;
+}
+
+.data-section {
+	width: 50%;
 }

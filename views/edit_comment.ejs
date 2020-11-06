@@ -1,10 +1,10 @@
 <% include ./partials/header %>
 
-<form
-	action="/model_select/<%=model_id%>/addcomment/<%=comment._id%>?_method=PUT"
-	method="POST"
->
-	<input type="text" name="text" value="<%= comment.text %>" />
-	<button>Submit</button>
+<form action="/model_select/<%=model_id%>/addcomment/<%=comment._id%>?_method=PUT" method="POST">
+	<div class="form-group">
+
+		<input class="form-control" type="text" name="text" value="<%= comment.text %>" />
+		<button class="btn btn-warning">Submit</button>
+	</div>
 </form>
 <% include ./partials/footer %>
