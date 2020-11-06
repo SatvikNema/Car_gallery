@@ -1,6 +1,10 @@
 <% include ./partials/header %>
+
 <div class="container">
 	<h2>This is the car you chose:<%=model.name%></h2>
+	<form action="/model_select/<%=model._id%>?_method=DELETE" method="post">
+		<button>Delete!</button>
+	</form>
 	<div class="thumbnail">
 		<img src="<%=model.img%>" />
 	</div>

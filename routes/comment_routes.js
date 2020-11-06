@@ -1,36 +1,12 @@
-const User = require("../models/user"),
-	Model = require("../models/models");
-
 const router = require("express").Router(),
 	Comment = require("../models/comments"),
-	Company_model = require("../models/models");
-
-const isLoggedIn = (req, res, next) => {
-	if (req.session.userId) {
-		next();
-	} else {
-		res.redirect("/login");
-	}
-};
-
-const checkOwnerCommentShip = async (req, res, next) => {
-	try {
-		if (req.session.userId) {
-			const currComment = await Comment.findById(req.params.comment_id);
-			if (currComment.author.id.equals(req.session.userId)) {
-				next();
-			}
-		} else {
-			res.redirect("back");
-		}
-	} catch (e) {
-		console.log("Error occured: " + e);
-	}
-};
+	User = require("../models/user"),
+	Model = require("../models/models"),
+	{ isLoggedIn, checkOwnerCommentShip } = require("./utils");
 
 router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
-		const modelFound = await Company_model.findById(req.params.id);
+		const modelFound = await Model.findById(req.params.id);
 		res.render("add_comment", { model: modelFound });
 	} catch (e) {
 		console.log("Error occured: " + e);
@@ -39,7 +15,7 @@ router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 
 router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
-		const modelFound = await Company_model.findById(req.params.id);
+		const modelFound = await Model.findById(req.params.id);
 		const commentAuthor = await User.findById(req.session.userId);
 		const newComment = await new Comment({
 			text: req.body.content,

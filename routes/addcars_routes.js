@@ -1,24 +1,21 @@
 const router = require("express").Router(),
 	Company = require("../models/company"),
-	Company_model = require("../models/models");
+	Model = require("../models/models"),
+	{ isLoggedIn } = require("./utils");
 
-const isLoggedIn = (req, res, next) => {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-};
 router.get("/add_car", isLoggedIn, (req, res) => {
 	res.render("addcar");
 });
 
-router.post("/add_car", async (req, res) => {
+router.post("/add_car", isLoggedIn, async (req, res) => {
 	try {
 		const { company, model, img } = req.body;
 		const companyFound = await Company.findOne({ comp_name: company });
-		const newModel = await new Company_model({
+		const newModel = await new Model({
 			name: model,
 			img,
+			comments: [],
+			author_id: req.session.userId,
 		});
 		await newModel.save();
 		if (companyFound) {

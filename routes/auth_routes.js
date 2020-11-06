@@ -1,22 +1,8 @@
 const express = require("express"),
 	router = express.Router(),
 	bcrypt = require("bcrypt"),
-	User = require("../models/user");
-
-const loginRedirect = (req, res, next) => {
-	if (req.session.userId) {
-		next();
-	} else {
-		res.redirect("/login");
-	}
-};
-const homeRedirect = (req, res, next) => {
-	if (req.session.userId) {
-		res.redirect("/");
-	} else {
-		next();
-	}
-};
+	User = require("../models/user"),
+	{ isLoggedIn, homeRedirect } = require("./utils");
 
 router.get("/register", homeRedirect, (req, res) => {
 	res.render("register");
@@ -75,7 +61,7 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.get("/logout", loginRedirect, (req, res) => {
+router.get("/logout", isLoggedIn, (req, res) => {
 	req.session.destroy((err) => {
 		res.clearCookie(process.env.SESSION_NAME);
 		res.redirect("/");

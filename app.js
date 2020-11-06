@@ -4,6 +4,7 @@ const express = require("express"),
 	mongoose = require("mongoose"),
 	methodOverride = require("method-override"),
 	session = require("express-session"),
+	mongoStore = require("connect-mongo")(session),
 	addingCarRoutes = require("./routes/addcars_routes"),
 	authRoutes = require("./routes/auth_routes"),
 	commentRoutes = require("./routes/comment_routes"),
@@ -13,12 +14,12 @@ User = require("./models/user");
 
 const app = express();
 const {
+	PORT = 3000,
 	SESSION_SECRET,
 	SESSION_NAME,
 	MONGODB_CONNECTION_URI,
 	MONGODB_CONNECTION_URI_LOCAL,
 } = process.env;
-let PORT = process.env.PORT || 3000;
 
 mongoose.connect(MONGODB_CONNECTION_URI_LOCAL, {
 	useNewUrlParser: true,
@@ -41,6 +42,9 @@ app.use(methodOverride("_method"));
 
 app.use(
 	session({
+		store: new mongoStore({
+			mongooseConnection: mongoose.connection,
+		}),
 		name: SESSION_NAME,
 		secret: SESSION_SECRET,
 		saveUninitialized: false,

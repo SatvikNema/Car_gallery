@@ -1,6 +1,8 @@
 const router = require("express").Router(),
 	Company = require("../models/company"),
-	Company_model = require("../models/models");
+	Comment = require("../models/comments"),
+	Model = require("../models/models"),
+	{ isLoggedIn, checkModelOwnership } = require("./utils");
 
 router.get("/", async (req, res) => {
 	try {
@@ -26,10 +28,33 @@ router.post("/", async (req, res) => {
 
 router.get("/model_select/:id", async (req, res) => {
 	try {
-		const modelFound = await Company_model.findById(req.params.id)
+		const modelFound = await Model.findById(req.params.id)
 			.populate("comments")
 			.exec();
 		res.render("car_display", { model: modelFound });
+	} catch (e) {
+		console.log("Error occured: " + e);
+	}
+});
+
+router.delete("/model_select/:id", checkModelOwnership, async (req, res) => {
+	try {
+		const model = await Model.findByIdAndRemove(req.params.id);
+		const comments_ids = model.comments;
+		await Comment.deleteMany({ _id: { $in: comments_ids } });
+		const company = await Company.findOne({
+			car_models: req.params.id,
+		});
+		const index = company.car_models.indexOf(req.params.id);
+		if (index > -1) {
+			company.car_models.splice(index, 1);
+		}
+		if (company.car_models.length > 0) {
+			await company.save();
+		} else {
+			await Company.findByIdAndRemove(company._id);
+		}
+		return res.redirect("/");
 	} catch (e) {
 		console.log("Error occured: " + e);
 	}
