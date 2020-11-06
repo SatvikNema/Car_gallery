@@ -5,6 +5,7 @@ const isLoggedIn = (req, res, next) => {
 	if (req.session.userId) {
 		next();
 	} else {
+		req.session.lastPageUrl = req.originalUrl;
 		res.redirect("/login");
 	}
 };

@@ -1,24 +1,24 @@
 <% include ./partials/header %>
-<div class="container">
-	<div style="width: 30%; margin: 25px auto">
+<div>
+	<div>
 		<div class="row">
 			<form method="POST" action="/add_car">
 				<div class="form-group">
 					<label>Enter the company name: </label>
-					<input type="text" name="company" />
+					<input class="form-control" type="text" name="company" />
 				</div>
 
 				<div class="form-group">
 					<label>Enter the model: </label>
-					<input type="text" name="model" />
+					<input class="form-control" type="text" name="model" />
 				</div>
 
 				<div class="form-group">
 					<label>Enter the image url: </label>
-					<input type="text" name="img" />
+					<input class="form-control" type="text" name="img" />
 				</div>
 
-				<button>Submit!</button>
+				<button class="btn btn-primary">Submit!</button>
 			</form>
 		</div>
 	</div>

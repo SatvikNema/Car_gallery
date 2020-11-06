@@ -56,15 +56,7 @@ app.use(
 	})
 );
 
-// Debug the session info
-// app.use((req, res, next) => {
-// 	console.log(req.session);
-// 	next();
-// });
-
-//making an instance of current user and storing it in currentUser
-// then passing the instance of currentUser to all the ejs templates in the app
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
 	res.locals.currentUser = req.session;
 	next();
 });

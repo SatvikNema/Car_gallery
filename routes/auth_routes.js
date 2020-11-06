@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
 			await newUser.save();
 			req.session.userId = newUser._id;
 			req.session.username = newUser.username;
-			return res.redirect("/");
+			return res.redirect(req.session.lastPageUrl || "/");
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
 				// logged in!
 				req.session.userId = userExists._id;
 				req.session.username = userExists.username;
-				return res.redirect("/");
+				return res.redirect(req.session.lastPageUrl || "/");
 			} else {
 				// password did not match
 				return res.redirect("/login");
