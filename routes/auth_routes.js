@@ -5,7 +5,10 @@ const express = require("express"),
 	{ isLoggedIn, homeRedirect } = require("./utils");
 
 router.get("/register", homeRedirect, (req, res) => {
-	res.render("register");
+	res.render("register", {
+		successMessage: req.flash("successMessage"),
+		dangerMessage: req.flash("dangerMessage"),
+	});
 });
 
 router.post("/register", async (req, res) => {
@@ -13,7 +16,7 @@ router.post("/register", async (req, res) => {
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const userExists = await User.findOne({ username: req.body.username });
 		if (userExists) {
-			console.log("This username already exists. Try a new one.");
+			req.flash("dangerMessage", "This user already exists!");
 			return res.redirect("/register");
 		} else {
 			const newUser = new User({
@@ -24,22 +27,27 @@ router.post("/register", async (req, res) => {
 			await newUser.save();
 			req.session.userId = newUser._id;
 			req.session.username = newUser.username;
+			req.flash("successMessage", "Registered successfully!");
 			return res.redirect(req.session.lastPageUrl || "/");
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
+		return res.redirect("back");
 	}
 });
 
 router.get("/login", homeRedirect, (req, res) => {
-	res.render("login");
+	res.render("login", {
+		successMessage: req.flash("successMessage"),
+		dangerMessage: req.flash("dangerMessage"),
+	});
 });
 
 router.post("/login", async (req, res) => {
 	try {
 		const userExists = await User.findOne({ username: req.body.username });
 		if (!userExists) {
-			// No use with that username!
+			req.flash("dangerMessage", "This username does not exist!");
 			return res.redirect("login");
 		} else {
 			const matched = await bcrypt.compare(
@@ -50,14 +58,17 @@ router.post("/login", async (req, res) => {
 				// logged in!
 				req.session.userId = userExists._id;
 				req.session.username = userExists.username;
+				req.flash("successMessage", "Successfully logged in!");
 				return res.redirect(req.session.lastPageUrl || "/");
 			} else {
 				// password did not match
+				req.flash("dangerMessage", "Password did not match!");
 				return res.redirect("/login");
 			}
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
+		res.redirect("back");
 	}
 });
 

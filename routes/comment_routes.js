@@ -7,9 +7,18 @@ const router = require("express").Router(),
 router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
 		const modelFound = await Model.findById(req.params.id);
-		res.render("add_comment", { model: modelFound });
+		if (!modelFound) {
+			req.flash("dangerMessage", "That model does not exist!");
+			return res.redirect("back");
+		}
+		res.render("add_comment", {
+			model: modelFound,
+			successMessage: req.flash("successMessage"),
+			dangerMessage: req.flash("dangerMessage"),
+		});
 	} catch (e) {
 		console.log("Error occured: " + e);
+		res.redirect("back");
 	}
 });
 
@@ -29,9 +38,12 @@ router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 
 		await newComment.save();
 		await modelFound.save();
+		req.flash("successMessage", "The comment was added!");
 		res.redirect("/model_select/" + req.params.id);
 	} catch (e) {
 		console.log("Error occured: " + e);
+		req.flash("dangerMessage", "Could not post the comment!");
+		return res.redirect("back");
 	}
 });
 
@@ -41,12 +53,19 @@ router.get(
 	async (req, res) => {
 		try {
 			const commentFound = await Comment.findById(req.params.comment_id);
+			if (!commentFound) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("back");
+			}
 			res.render("edit_comment", {
 				comment: commentFound,
 				model_id: req.params.id,
+				successMessage: req.flash("successMessage"),
+				dangerMessage: req.flash("dangerMessage"),
 			});
 		} catch (e) {
 			console.log("Error ocurred: " + e);
+			res.redirect("back");
 		}
 	}
 );
@@ -62,9 +81,15 @@ router.put(
 					text: req.body.text,
 				}
 			);
+			if (!oldComment) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("back");
+			}
+			req.flash("successMessage", "The comment was updated!");
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error ocurred: " + e);
+			return res.redirect("back");
 		}
 	}
 );
@@ -77,15 +102,22 @@ router.delete(
 			const oldComment = await Comment.findByIdAndRemove(
 				req.params.comment_id
 			);
+			if (!oldComment) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("back");
+			}
+
 			const model = await Model.findById(req.params.id);
 			const index = model.comments.indexOf(req.params.comment_id);
 			if (index > -1) {
 				model.comments.splice(index, 1);
 			}
 			await model.save();
+			req.flash("successMessage", "The comment was deleted!");
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error occured: " + e);
+			return res.redirect("back");
 		}
 	}
 );

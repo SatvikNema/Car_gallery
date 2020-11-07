@@ -6,12 +6,14 @@ const isLoggedIn = (req, res, next) => {
 		next();
 	} else {
 		req.session.lastPageUrl = req.originalUrl;
+		req.flash("dangerMessage", "Please Login to continue");
 		res.redirect("/login");
 	}
 };
 
 const homeRedirect = (req, res, next) => {
 	if (req.session.userId) {
+		req.flash("dangerMessage", "You are already logged in");
 		res.redirect("/");
 	} else {
 		next();
@@ -23,13 +25,24 @@ const checkOwnerCommentShip = async (req, res, next) => {
 		if (req.session.userId) {
 			const currComment = await Comment.findById(req.params.comment_id);
 			if (currComment.author.id.equals(req.session.userId)) {
-				next();
+				return next();
+			} else {
+				req.flash(
+					"dangerMessage",
+					"Cannot delete someone else's comment!"
+				);
+				return res.redirect("back");
 			}
 		} else {
+			req.flash(
+				"dangerMessage",
+				"Cannot edit/delete someone else's comment!"
+			);
 			res.redirect("back");
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
+		res.redirect("back");
 	}
 };
 

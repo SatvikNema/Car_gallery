@@ -4,7 +4,10 @@ const router = require("express").Router(),
 	{ isLoggedIn } = require("./utils");
 
 router.get("/add_car", isLoggedIn, (req, res) => {
-	res.render("addcar");
+	res.render("addcar", {
+		successMessage: req.flash("successMessage"),
+		dangerMessage: req.flash("dangerMessage"),
+	});
 });
 
 router.post("/add_car", isLoggedIn, async (req, res) => {
@@ -28,9 +31,15 @@ router.post("/add_car", isLoggedIn, async (req, res) => {
 			});
 			await newCompany.save();
 		}
+		req.flash("successMessage", "Model was added");
 		res.redirect("/");
 	} catch (e) {
+		req.flash(
+			"dangerMessage",
+			"Error occured while creating the model. Please verify the entered details"
+		);
 		console.log("Error ocurred: " + e);
+		res.redirect("back");
 	}
 });
 

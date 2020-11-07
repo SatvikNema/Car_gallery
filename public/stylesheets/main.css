@@ -194,3 +194,18 @@ div span {
 .data-section {
 	width: 50%;
 }
+
+.flash {
+	font-size: x-large;
+	width: 50%;
+}
+
+.success {
+	color: green;
+	background-color: rgb(0, 128, 0, 0.3);
+}
+
+.fail {
+	color: red;
+	background-color: rgb(255, 0, 0, 0.3);
+}

@@ -5,6 +5,7 @@ const express = require("express"),
 	methodOverride = require("method-override"),
 	session = require("express-session"),
 	mongoStore = require("connect-mongo")(session),
+	flash = require("connect-flash"),
 	addingCarRoutes = require("./routes/addcars_routes"),
 	authRoutes = require("./routes/auth_routes"),
 	commentRoutes = require("./routes/comment_routes"),
@@ -55,6 +56,8 @@ app.use(
 		},
 	})
 );
+
+app.use(flash());
 
 app.use((req, res, next) => {
 	res.locals.currentUser = req.session;

@@ -8,7 +8,11 @@ const router = require("express").Router(),
 router.get("/", async (req, res) => {
 	try {
 		const allCompanies = await Company.find();
-		res.render("home", { company: allCompanies });
+		res.render("home", {
+			company: allCompanies,
+			successMessage: req.flash("successMessage"),
+			dangerMessage: req.flash("dangerMessage"),
+		});
 	} catch (e) {
 		console.log("Error occured: " + e);
 	}
@@ -21,9 +25,15 @@ router.post("/", async (req, res) => {
 		})
 			.populate("car_models")
 			.exec();
-		res.render("model_select", { company: selectedPopulatedCompany });
+		res.render("model_select", {
+			company: selectedPopulatedCompany,
+			successMessage: req.flash("successMessage"),
+			dangerMessage: req.flash("dangerMessage"),
+		});
 	} catch (e) {
 		console.log("Error occured: " + e);
+		req.flash("dangerMessage", "Could not find the company!");
+		res.redirect("back");
 	}
 });
 
@@ -33,9 +43,20 @@ router.get("/model_select/:id", async (req, res) => {
 			.populate("comments")
 			.exec();
 		const owner = await User.findById(modelFound.author_id);
-		res.render("car_display", { model: modelFound, owner });
+		if (!owner) {
+			req.flash("dangerMessage", "Could not find the model's owner.");
+			return res.redirect("/");
+		}
+		res.render("car_display", {
+			model: modelFound,
+			owner,
+			successMessage: req.flash("successMessage"),
+			dangerMessage: req.flash("dangerMessage"),
+		});
 	} catch (e) {
+		req.flash("dangerMessage", "Could not find the model.");
 		console.log("Error occured: " + e);
+		return res.redirect("back");
 	}
 });
 
@@ -48,6 +69,7 @@ router.delete("/model_select/:id", checkModelOwnership, async (req, res) => {
 			car_models: req.params.id,
 		});
 		const index = company.car_models.indexOf(req.params.id);
+
 		if (index > -1) {
 			company.car_models.splice(index, 1);
 		}
@@ -56,9 +78,11 @@ router.delete("/model_select/:id", checkModelOwnership, async (req, res) => {
 		} else {
 			await Company.findByIdAndRemove(company._id);
 		}
+		req.flash("successrMessage", "The model was deleted!");
 		return res.redirect("/");
 	} catch (e) {
-		console.log("Error occured: " + e);
+		req.flash("dangerMessage", "Error in deleting the model.");
+		res.redirect("back");
 	}
 });
 
