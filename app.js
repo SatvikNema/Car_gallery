@@ -2,21 +2,27 @@ require("dotenv").config();
 const express = require("express"),
 	bodyParser = require("body-parser"),
 	mongoose = require("mongoose"),
-	passport = require("passport"),
-	LocalStrategy = require("passport-local"),
 	methodOverride = require("method-override"),
+	session = require("express-session"),
+	mongoStore = require("connect-mongo")(session),
+	flash = require("connect-flash"),
 	addingCarRoutes = require("./routes/addcars_routes"),
 	authRoutes = require("./routes/auth_routes"),
 	commentRoutes = require("./routes/comment_routes"),
 	homeRoutes = require("./routes/home_routes"),
-	User = require("./models/user"),
-	MONGO_URI = process.env.MONGODB_CONNECTION_URI;
+	profileRoutes = require("./routes/profile_routes");
+User = require("./models/user");
 
 const app = express();
-let PORT = process.env.PORT || 3000;
+const {
+	PORT = 3000,
+	SESSION_SECRET,
+	SESSION_NAME,
+	MONGODB_CONNECTION_URI,
+	MONGODB_CONNECTION_URI_LOCAL,
+} = process.env;
 
-//connecting to database
-mongoose.connect(MONGO_URI, {
+mongoose.connect(MONGODB_CONNECTION_URI, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
@@ -27,42 +33,49 @@ mongoose.connection.once("open", () => {
 	console.log("connection with mongoose established");
 });
 
-//enabling the body parser to read from the forms
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static("public"));
 
-//setting the views dir for ejs
 app.set("view engine", "ejs");
 
-//telling the app to use the method overide function for REST routes
 app.use(methodOverride("_method"));
 
-//auth setup
 app.use(
-	require("express-session")({
-		secret: "Lykan Hypersport is the best supercar!",
-		resave: false,
+	session({
+		store: new mongoStore({
+			mongooseConnection: mongoose.connection,
+		}),
+		name: SESSION_NAME,
+		secret: SESSION_SECRET,
 		saveUninitialized: false,
+		resave: false,
+		cookie: {
+			maxAge: 1000 * 60 * 60,
+			path: "/",
+		},
 	})
 );
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
-//making an instance of current user and storing it in currentUser
-// then passing the instance of currentUser to all the ejs templates in the app
-app.use(function (req, res, next) {
-	res.locals.currentUser = req.user;
+app.use(flash());
+
+app.use((req, res, next) => {
+	res.locals.currentUser = req.session;
 	next();
 });
 
-//telling the app to use all the routes
 app.use(addingCarRoutes);
 app.use(commentRoutes);
 app.use(authRoutes);
 app.use(homeRoutes);
+app.use(profileRoutes);
+
+app.get("*", (req, res) => {
+	res.render("galatRouteBhai", {
+		successMessage: "",
+		dangerMessage: "",
+	});
+});
 
 app.listen(PORT, function () {
 	console.log("Starting up the car server");

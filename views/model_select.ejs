@@ -1,5 +1,5 @@
 <% include ./partials/header %> 
-<div style="text-align: center">
+<div>
 	<h1><strong>Enter the model you wish to choose from <%=company.comp_name%></strong></h1>
 	<ul>
 		<% for(var i=0;i<company.car_models.length;i++){ %>
@@ -7,3 +7,4 @@
 		<% } %>
 	</ul>
 </div>
+<% include ./partials/footer %>

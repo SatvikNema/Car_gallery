@@ -1,67 +1,211 @@
 .thumbnail img {
-    width: 100%;
+	width: 100%;
 }
 
 .thumbnail {
-    padding: 0;
+	padding: 0;
 }
 
 .thumbnail .caption-full {
-    padding: 9px;
+	padding: 9px;
 }
 
 #delete-form {
-    display: inline;
-
+	display: inline;
 }
-#bottom{
+.bottom {
 	padding-bottom: 10px;
 }
-body{
+body {
 	background-size: cover;
 	background-image: url("testing.jpeg");
-    color: white;
-    background-size: 1280px 800px;
+	/* background-image: url("../back2.jpg"); */
+
+	color: white;
+	background-size: 1280px 800px;
 }
 
-#rightmost{
-    padding-right: 20px;
+#rightmost {
+	padding-right: 20px;
 }
 
-select{
-    color: black;
+select {
+	color: black;
 }
-button{
-    color: black;
+button {
+	color: black;
+}
+#grid img {
+	width: 30%;
+	float: left;
+	margin: 1.66%;
+}
 
-}
-#grid img{
-    width: 30%;
-    float: left;
-    margin: 1.66%;	
-}
-
-#display img{
-    /* height: 100px; */
-    /* margin: auto;
+#display img {
+	/* height: 100px; */
+	/* margin: auto;
     padding-left: 140px; */
-    height: 650px;
+	height: 650px;
 }
-li{
+li {
 	list-style-type: None;
 }
-a{
+a {
 	color: white;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
 }
 
-.like{
+.like {
 	color: black;
 }
 
-input{
+input {
 	color: red;
 }
 
-.commentText{
-	color: black;
+.comment-box {
+	width: 80%;
+	margin: auto;
+	border: 1px solid rgb(208, 235, 135);
+	background-color: rgb(30, 87, 40, 0.5);
+	padding: 15px;
+	margin-bottom: 20px;
+	height: 80px;
+}
+.comment-box-profile {
+	width: 400px;
+	margin: auto;
+	border: 1px solid rgb(208, 235, 135);
+	background-color: rgb(30, 87, 40, 0.5);
+	padding: 5px;
+	margin-bottom: 20px;
+	height: 60px;
+}
+.comment-text {
+	color: whitesmoke;
+	margin-left: 10px;
+	font-size: medium;
+}
+
+.comment-date {
+	color: rgb(15, 199, 85);
+}
+
+.comment-author {
+	animation: example 2s infinite;
+	animation-direction: alternate;
+}
+
+.comment-text-profile {
+	color: whitesmoke;
+	font-size: medium;
+}
+
+.comment-model-profile {
+	color: rgb(15, 199, 85);
+}
+.model-author {
+	font-size: x-large;
+}
+.model-author:hover {
+	text-decoration: none;
+	animation: example 5s infinite;
+	animation-direction: alternate;
+}
+.model-name {
+	font-size: 50px;
+}
+
+.model-box {
+	width: 200px;
+	margin: auto;
+	background-color: rgb(30, 87, 40, 0.5);
+	border: 1px solid rgb(208, 235, 135);
+	padding: 15px;
+	margin-bottom: 20px;
+}
+.model-profile {
+	color: red;
+	font-size: x-large;
+}
+@keyframes example {
+	10% {
+		color: red;
+	}
+	20% {
+		color: orange;
+	}
+	30% {
+		color: yellow;
+	}
+	40% {
+		color: lime;
+	}
+	50% {
+		color: lightgreen;
+	}
+	60% {
+		color: green;
+	}
+	70% {
+		color: darkgreen;
+	}
+	80% {
+		color: violet;
+	}
+	90% {
+		color: blue;
+	}
+	100% {
+		color: purple;
+	}
+}
+
+hr {
+	width: 40%;
+}
+
+.divide {
+	width: 70%;
+}
+
+.form-control {
+	width: 250px;
+	margin-bottom: 20px;
+}
+
+.h1 {
+	font-size: 10px;
+	color: red;
+}
+
+div span {
+	overflow-wrap: break-word;
+}
+
+.additional-buttons {
+	margin-top: 10px;
+	text-align: left;
+}
+
+.data-section {
+	width: 50%;
+}
+
+.flash {
+	font-size: x-large;
+	width: 50%;
+}
+
+.success {
+	color: green;
+	background-color: rgb(0, 128, 0, 0.3);
+}
+
+.fail {
+	color: red;
+	background-color: rgb(255, 0, 0, 0.3);
 }

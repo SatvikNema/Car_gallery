@@ -1,54 +1,49 @@
 const router = require("express").Router(),
 	Comment = require("../models/comments"),
-	Company_model = require("../models/models");
-
-const isLoggedIn = (req, res, next) => {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-};
-
-const checkOwnerCommentShip = async (req, res, next) => {
-	try {
-		if (req.isAuthenticated()) {
-			const currComment = await Comment.findById(req.params.comment_id);
-			if (currComment.author.id.equals(req.user.id)) {
-				next();
-			}
-		} else {
-			res.redirect("back");
-		}
-	} catch (e) {
-		console.log("Error occured: " + e);
-	}
-};
+	User = require("../models/user"),
+	Model = require("../models/models"),
+	{ isLoggedIn, checkOwnerCommentShip } = require("./utils");
 
 router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
-		const modelFound = await Company_model.findById(req.params.id);
-		res.render("add_comment", { model: modelFound });
+		const modelFound = await Model.findById(req.params.id);
+		if (!modelFound) {
+			req.flash("dangerMessage", "That model does not exist!");
+			return res.redirect("/");
+		}
+		res.render("add_comment", {
+			model: modelFound,
+			successMessage: req.flash("successMessage"),
+			dangerMessage: req.flash("dangerMessage"),
+		});
 	} catch (e) {
 		console.log("Error occured: " + e);
+		res.redirect("/");
 	}
 });
 
 router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	try {
-		const modelFound = await Company_model.findById(req.params.id);
+		const modelFound = await Model.findById(req.params.id);
+		const commentAuthor = await User.findById(req.session.userId);
 		const newComment = await new Comment({
 			text: req.body.content,
 			author: {
-				id: req.user._id,
-				username: req.user.username,
+				id: req.session.userId,
+				username: commentAuthor.username,
 			},
 		});
-		await newComment.save();
+
 		modelFound.comments.push(newComment);
+
+		await newComment.save();
 		await modelFound.save();
+		req.flash("successMessage", "The comment was added!");
 		res.redirect("/model_select/" + req.params.id);
 	} catch (e) {
 		console.log("Error occured: " + e);
+		req.flash("dangerMessage", "Could not post the comment!");
+		return res.redirect("/");
 	}
 });
 
@@ -58,12 +53,19 @@ router.get(
 	async (req, res) => {
 		try {
 			const commentFound = await Comment.findById(req.params.comment_id);
+			if (!commentFound) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("/");
+			}
 			res.render("edit_comment", {
 				comment: commentFound,
 				model_id: req.params.id,
+				successMessage: req.flash("successMessage"),
+				dangerMessage: req.flash("dangerMessage"),
 			});
 		} catch (e) {
 			console.log("Error ocurred: " + e);
+			res.redirect("/");
 		}
 	}
 );
@@ -79,9 +81,15 @@ router.put(
 					text: req.body.text,
 				}
 			);
+			if (!oldComment) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("/");
+			}
+			req.flash("successMessage", "The comment was updated!");
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error ocurred: " + e);
+			return res.redirect("/");
 		}
 	}
 );
@@ -94,9 +102,22 @@ router.delete(
 			const oldComment = await Comment.findByIdAndRemove(
 				req.params.comment_id
 			);
+			if (!oldComment) {
+				req.flash("dangerMessage", "This comment does not exist!");
+				return res.redirect("/");
+			}
+
+			const model = await Model.findById(req.params.id);
+			const index = model.comments.indexOf(req.params.comment_id);
+			if (index > -1) {
+				model.comments.splice(index, 1);
+			}
+			await model.save();
+			req.flash("successMessage", "The comment was deleted!");
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error occured: " + e);
+			return res.redirect("/");
 		}
 	}
 );

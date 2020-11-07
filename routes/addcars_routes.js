@@ -1,24 +1,24 @@
 const router = require("express").Router(),
 	Company = require("../models/company"),
-	Company_model = require("../models/models");
+	Model = require("../models/models"),
+	{ isLoggedIn } = require("./utils");
 
-const isLoggedIn = (req, res, next) => {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-};
 router.get("/add_car", isLoggedIn, (req, res) => {
-	res.render("addcar");
+	res.render("addcar", {
+		successMessage: req.flash("successMessage"),
+		dangerMessage: req.flash("dangerMessage"),
+	});
 });
 
-router.post("/add_car", async (req, res) => {
+router.post("/add_car", isLoggedIn, async (req, res) => {
 	try {
 		const { company, model, img } = req.body;
 		const companyFound = await Company.findOne({ comp_name: company });
-		const newModel = await new Company_model({
+		const newModel = await new Model({
 			name: model,
 			img,
+			comments: [],
+			author_id: req.session.userId,
 		});
 		await newModel.save();
 		if (companyFound) {
@@ -31,9 +31,15 @@ router.post("/add_car", async (req, res) => {
 			});
 			await newCompany.save();
 		}
+		req.flash("successMessage", "Model was added");
 		res.redirect("/");
 	} catch (e) {
+		req.flash(
+			"dangerMessage",
+			"Error occured while creating the model. Please verify the entered details"
+		);
 		console.log("Error ocurred: " + e);
+		res.redirect("/");
 	}
 });
 
