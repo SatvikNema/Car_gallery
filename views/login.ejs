@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
 <div class="container">
-	<div style="width: 30%; margin: 25px auto">
+	<div>
 		<h1>Login!</h1>
 		<form action="/login" method="POST">
 			<div class="form-group">
@@ -12,6 +12,7 @@
 			</div>
 			<input class="btn btn-primary" type="submit" value="Login!" />
 		</form>
-	</div>
+	</div><br>
+	<p>Dont have an account? <a href="/register">Register</a></p>
 </div>
 <% include ./partials/footer %>

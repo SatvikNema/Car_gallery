@@ -70,6 +70,13 @@ app.use(authRoutes);
 app.use(homeRoutes);
 app.use(profileRoutes);
 
+app.get("*", (req, res) => {
+	res.render("galatRouteBhai", {
+		successMessage: "",
+		dangerMessage: "",
+	});
+});
+
 app.listen(PORT, function () {
 	console.log("Starting up the car server");
 });
