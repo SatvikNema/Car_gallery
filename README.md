@@ -2,8 +2,8 @@
 
 Simple website made from nodejs, express, mongoDB and ejs.
 
-Various car models can be viewed, and commented upon. Comments have CRUD functionality.
+Various car models can be viewed, and commented upon. Complete CRUD functionlality. 
 
-More models can be added by the user.
+Uses bcrypt and express-session for auth and connect-mongo to store user-sessions.
 
 ### Deployed to https://car-gallery-v8.herokuapp.com/
