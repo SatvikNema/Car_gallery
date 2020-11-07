@@ -12,9 +12,13 @@
             </li>
         </div>
     <% }) %> 
+<% } else{ %>
+    <p>No comments made by this user</p>
+<% } %>
+
 
     <hr class="divide">
-
+<% if (modelsMade.length!=0) { %> 
     <p>Models added by <%= user.username %></p>
     <% modelsMade.forEach((model) => { %>
         <div class="model-box">
@@ -23,8 +27,10 @@
             </li>
         </div>
     <% }) %> 
-
 <% } else{ %>
-    <p>No comments made by this user</p>
+    <p>No models added yet</p>
 <% } %>
+
+
+
 <% include ./partials/footer %>

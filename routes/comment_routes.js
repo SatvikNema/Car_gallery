@@ -9,7 +9,7 @@ router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 		const modelFound = await Model.findById(req.params.id);
 		if (!modelFound) {
 			req.flash("dangerMessage", "That model does not exist!");
-			return res.redirect("back");
+			return res.redirect("/");
 		}
 		res.render("add_comment", {
 			model: modelFound,
@@ -18,7 +18,7 @@ router.get("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 		});
 	} catch (e) {
 		console.log("Error occured: " + e);
-		res.redirect("back");
+		res.redirect("/");
 	}
 });
 
@@ -43,7 +43,7 @@ router.post("/model_select/:id/addcomment", isLoggedIn, async (req, res) => {
 	} catch (e) {
 		console.log("Error occured: " + e);
 		req.flash("dangerMessage", "Could not post the comment!");
-		return res.redirect("back");
+		return res.redirect("/");
 	}
 });
 
@@ -55,7 +55,7 @@ router.get(
 			const commentFound = await Comment.findById(req.params.comment_id);
 			if (!commentFound) {
 				req.flash("dangerMessage", "This comment does not exist!");
-				return res.redirect("back");
+				return res.redirect("/");
 			}
 			res.render("edit_comment", {
 				comment: commentFound,
@@ -65,7 +65,7 @@ router.get(
 			});
 		} catch (e) {
 			console.log("Error ocurred: " + e);
-			res.redirect("back");
+			res.redirect("/");
 		}
 	}
 );
@@ -83,13 +83,13 @@ router.put(
 			);
 			if (!oldComment) {
 				req.flash("dangerMessage", "This comment does not exist!");
-				return res.redirect("back");
+				return res.redirect("/");
 			}
 			req.flash("successMessage", "The comment was updated!");
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error ocurred: " + e);
-			return res.redirect("back");
+			return res.redirect("/");
 		}
 	}
 );
@@ -104,7 +104,7 @@ router.delete(
 			);
 			if (!oldComment) {
 				req.flash("dangerMessage", "This comment does not exist!");
-				return res.redirect("back");
+				return res.redirect("/");
 			}
 
 			const model = await Model.findById(req.params.id);
@@ -117,7 +117,7 @@ router.delete(
 			res.redirect("/model_select/" + req.params.id);
 		} catch (e) {
 			console.log("Error occured: " + e);
-			return res.redirect("back");
+			return res.redirect("/");
 		}
 	}
 );

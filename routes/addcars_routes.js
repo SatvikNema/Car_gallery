@@ -39,7 +39,7 @@ router.post("/add_car", isLoggedIn, async (req, res) => {
 			"Error occured while creating the model. Please verify the entered details"
 		);
 		console.log("Error ocurred: " + e);
-		res.redirect("back");
+		res.redirect("/");
 	}
 });
 

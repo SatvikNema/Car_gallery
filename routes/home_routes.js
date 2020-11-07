@@ -8,6 +8,7 @@ const router = require("express").Router(),
 router.get("/", async (req, res) => {
 	try {
 		const allCompanies = await Company.find();
+		// console.log(req.session.userId + " " + req.session.username);
 		res.render("home", {
 			company: allCompanies,
 			successMessage: req.flash("successMessage"),
@@ -33,7 +34,7 @@ router.post("/", async (req, res) => {
 	} catch (e) {
 		console.log("Error occured: " + e);
 		req.flash("dangerMessage", "Could not find the company!");
-		res.redirect("back");
+		res.redirect("/");
 	}
 });
 
@@ -56,7 +57,7 @@ router.get("/model_select/:id", async (req, res) => {
 	} catch (e) {
 		req.flash("dangerMessage", "Could not find the model.");
 		console.log("Error occured: " + e);
-		return res.redirect("back");
+		return res.redirect("/");
 	}
 });
 
@@ -82,7 +83,7 @@ router.delete("/model_select/:id", checkModelOwnership, async (req, res) => {
 		return res.redirect("/");
 	} catch (e) {
 		req.flash("dangerMessage", "Error in deleting the model.");
-		res.redirect("back");
+		res.redirect("/");
 	}
 });
 

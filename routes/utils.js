@@ -6,7 +6,7 @@ const isLoggedIn = (req, res, next) => {
 		next();
 	} else {
 		req.session.lastPageUrl = req.originalUrl;
-		req.flash("dangerMessage", "Please Login to continue");
+		req.flash("dangerMessage", "Need to sign in before doing that");
 		res.redirect("/login");
 	}
 };

@@ -22,7 +22,7 @@ const {
 	MONGODB_CONNECTION_URI_LOCAL,
 } = process.env;
 
-mongoose.connect(MONGODB_CONNECTION_URI_LOCAL, {
+mongoose.connect(MONGODB_CONNECTION_URI, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,

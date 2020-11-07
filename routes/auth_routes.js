@@ -28,11 +28,14 @@ router.post("/register", async (req, res) => {
 			req.session.userId = newUser._id;
 			req.session.username = newUser.username;
 			req.flash("successMessage", "Registered successfully!");
-			return res.redirect(req.session.lastPageUrl || "/");
+			req.session.save(function (err) {
+				if (err) console.log(err);
+				return res.redirect(req.session.lastPageUrl || "/");
+			});
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
-		return res.redirect("back");
+		return res.redirect("/");
 	}
 });
 
@@ -48,7 +51,7 @@ router.post("/login", async (req, res) => {
 		const userExists = await User.findOne({ username: req.body.username });
 		if (!userExists) {
 			req.flash("dangerMessage", "This username does not exist!");
-			return res.redirect("login");
+			return res.redirect("/login");
 		} else {
 			const matched = await bcrypt.compare(
 				req.body.password,
@@ -59,7 +62,10 @@ router.post("/login", async (req, res) => {
 				req.session.userId = userExists._id;
 				req.session.username = userExists.username;
 				req.flash("successMessage", "Successfully logged in!");
-				return res.redirect(req.session.lastPageUrl || "/");
+				req.session.save(function (err) {
+					if (err) console.log(err);
+					return res.redirect(req.session.lastPageUrl || "/");
+				});
 			} else {
 				// password did not match
 				req.flash("dangerMessage", "Password did not match!");
@@ -68,7 +74,7 @@ router.post("/login", async (req, res) => {
 		}
 	} catch (e) {
 		console.log("Error occured: " + e);
-		res.redirect("back");
+		res.redirect("/");
 	}
 });
 
